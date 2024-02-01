@@ -16,8 +16,8 @@ image: 'Dockerfile'
 BURP_START_URL: ${{ inputs.target-url }} 
 BURP_REPORT_FILE_PATH: /github/workspace/${{ inputs.output-filename }}
 branding:  icon: 'activity'
-  color: 'green'
-    {"target":
+  color: 'green'                 [example target configuration only]
+{"target":
      {"scope":
      {"advanced_mode":
       true,"exclude":[],"include":[{"enabled":true,
