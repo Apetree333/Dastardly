@@ -1,0 +1,166 @@
+name: 'JUnit Report Action'
+description: 'Report JUnit test results as annotations on Github Pull Request [junit]'.xbranding:
+  icon: 'check-circle'
+  color: 'green' inputs:
+  token:    description: 
+  'Specify the token to use to publish the check.'
+    required: 
+    false
+default: ${{ github.token }}
+github_token:
+    description:
+    'Deprecated syntax to specify github token.'
+required:
+    false
+report_paths:
+    description:
+    'Xml report paths in glob format'
+required: false
+default: '**/junit-reports
+    /TEST-*.xml'
+  test_files_prefix:
+    description: 
+    'Prefix to add to test file paths from report files when annotating'
+    required: false
+    default: ''
+  exclude_sources:
+    description: 
+    'Comma seperated list of source folders to ignore for lookup'
+    required:
+    false
+  suite_regex:
+    description:
+    'Regular expression for the named test suites'
+    required: 
+  
+    false
+    default:
+' annotate_only:
+    description: 
+    'Enable to only annotate the results on the files, will not create a check run.'
+    required:
+    false
+    default:
+'false'
+  check_annotations:
+    description: 
+    'Defines 
+      if the checks will include annotations (This is different than `annotate_only`).'
+    required: 
+    false
+    default: 
+'true'
+update_check:
+    description:
+    'Defines if the active check should be updated instead'
+  
+required: false
+    default: 
+false'
+  check_name:
+    description: 
+    'Check name for test reports.'
+    required:
+    false
+default:
+'JUnit Test Report'
+  commit:
+    description: 
+    'Commit SHA to update the check status.'
+    required: 
+    false
+  fail_on_failure:
+    description: 
+  'Fail the build in case a test failure occurred.'
+    required: 
+    false
+
+default: 
+'false'
+  require_tests:
+    description:
+    'Fail if no test are found.'
+    required:
+    false
+    default: 
+'false'
+  require_passed_tests:
+    description:
+    
+    'Fail if 
+      no passed test are found.'
+    required    false  
+default: 
+'false'
+  include_passed:
+    description:
+    'Include passed tests in the report'
+    required
+      false
+    default: 
+'false' check_title_template:
+    description: |-  Template to
+    configure the title format. Placeholders: {{FILE_NAME}}, {{SUITE_NAME}}, {{TEST_NAME}}.
+    required: 
+    false
+  summary:
+    description
+      'Additional text to summary output'
+    required:
+    false  default:'
+  check_retries:
+    description: 
+    'If a testcase is retried, ignore the original failure.'
+    required: 
+    false
+    default:
+'false'
+  transformers:
+    description:
+    'Provide a regex pattern and target pattern'
+    required: false
+    default: '[]'
+  job_summary:
+    description
+      'Enables the publishing of a JOB_SUMMARY with the report.'
+    required: false
+    default: true
+  detailed_summary:
+    description: 
+    'Include table with all test results in summary'
+    required: false
+    default: false
+  annotate_notice:
+    description: 
+    'Annotate passed tests along with warning and failed ones'
+    required: false
+    default: false
+  follow_symlink:
+    description:
+    'Enables the file globber to follow symlinks. Default: false'
+    required: false
+    default: false
+  job_name:
+    description:
+    'Specify the name of a check to update'
+    required: false
+    default: ${{ github.job }}
+  annotations_limit:
+    description: 
+    'Specify the
+      limit for annotations. This will also interrupt parsing all test-suites if the limit is reached.'
+    required: 
+    false
+  truncate_stack_traces:
+    descrption: 
+    'Truncate stack trace
+      from test output to 2 lines in annotations'
+    required:
+    false
+    default: 
+true
+runs:
+  using: 
+  'node20'
+  main: 
+  'dist/index.js'
