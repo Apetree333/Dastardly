@@ -1,0 +1,74 @@
+git clone 
+          https://github.com/percy/example-percy-appium-js.git
+cd
+example-percy-appium-js
+  #make install.  
+  Apk(android)  
+curl
+-u "apetree_l6gf5A:cHsicGX7xTyafcdHByQW"
+\  -X POST "https://api-cloud.browserstack.com/app-automate/upload" 
+\  -F "file=@resources/android_resourcesWikipediaSample.apk"
+Ios: 
+curl
+-u"apetree_l6gf5A:cHsicGX7xTyafcdHByQW"
+\  -X POST "https://api-cloud.browserstack.com/app-automate/upload" 
+\ -F "file=@resources/ios_resources/BStackSampleApp.ipa"
+{"app_url":"bs://b3d22f77ac5c4064*****1c470d3728a9b697f"}
+Make a note of the app url.
+To know more about uploading an app to App Automate, refer to the Upload an App REST API documentation.
+Create an App Percy project
+Sign in to Percy and create a new app project, for example, test-project. After you’ve created the project, you’ll be shown a Percy Access Token. Use it in the next step.
+Create an App Percy project
+Sign in to Percy and create a new app project, for example, test-project. After you’ve created the project, you’ll be shown a Percy Access Token. Use it in the next step.
+export
+ PERCY_TOKEN="<your token here>"**Usually **this would only be set up in your CI environment, but to keep things simple we’ll configure it in your local shell so that Percy is enabled in your local environment
+Generate the first build
+Check out a new branch for your work in this tutorial (we’ll call this branch tutorial-example), then run tests & take screenshots:
+$ git checkout -b tutorial-example $ cd wd $ npm install 
+Now run the build with following commands
+#AndroidIOS
+npx percy app:exec -- node android.js 
+This will run the app’s JavaScript Appium tests, which contain calls to create Percy screenshots. The screenshots will then be uploaded to Percy for comparison. Percy will use the PERCY_TOKEN you used in Step 2 to know which organization and project to upload the screenshots to.
+In general, your test would look like the below example. Whenever you have to capture a screenshot for visual testing, use percyScreenshot functionconst percyScreenshot = require('@percyappium-app');const wd = require('wd')const desiredCaps = {...}driver.init(desiredCaps)  .then(function() {  // wait for app to load   return newPromise((
+resolve)=>setTimeout(resolve, 5000)) })  then(function() {   
+return percyScreenshot(driver, 
+'Home Screen');}).then(function () {returndriver.waitForElementByAccessibilityId('Search Wikipedia', asserters.isDisplayed && asserters.isEnabled, 30000);}) .then(function (searchElement) 
+{ return searchElement.click();  })  .then(function () {    return driver.waitForElementById
+('org.wikipedia.alpha:id
+/search_src_text', 
+asserters.isDisplayed &
+& asserters.isEnabled, 
+30000);})  .then(function
+
+(ssearinput{  /  
+/ Change `
+BrowserStack` 
+to other 
+word to see the diff in next build return searchInput.sendKeys("BrowserStack");})l  .then(function () {    return driver.elementsByClassName('android.widet.TextView');     })  .then(function () {    returndriver.hideKeyboard();     })
+  .then(function() {  return percyScreenshot(driver, '
+Search results'); }) .fin(function() { 
+/ 
+Invoke driver.quit() after the test is doneto indicate that the test is completed.Return driver.quit();}) .done();
+u can view the screenshots in Percy now if you want, but there will be no visual comparisons yet. You’ll see that Percy shows you that these screenshots come from your tutorial-example branch.
+Modify the sample application
+Now, it’s time to introduce some visual changes to your app. Replace the search_input.send_keys in your test script as shown below.
+Sample Android AppSample iOS App
+search_input.send_keys("BrowserStack again") 
+Commit your changes
+git commit -am "Text Changed"
+Create a commit with the changes.
+npx percy app:exec -- node android.js
+Copy snippet
+git commit -am "Text Changed"
+Run tests again
+Run the tests with screenshots again.
+Sample Android AppSample iOS App
+npx percy app:exec -- node android.js 
+View  visual 
+differences on 
+        dashboard 
+Visit your project in Percy and you’ll see a new build with visual comparisons between the two runs. Click anywhere on the Build 2 row (we are assuming here that you are using a new project to test things out). You can see the original screenshots on the left, and the new screenshots on the right.Percy has highlighted what’s changed visually in the app! Screenshots with the largest changes are shown first You can click on the highlight to reveal the 
+If you scroll down, you’ll see that no other test cases were impacted by our changes to text. The unchanged screenshots are shown under an Unchanged filter and are hidden by default.
+
+Congratulations!
+From here, you can try making your own changes to the app and tests, if you like. If you do, re-run the tests and you’ll see any visual changes reflected in Percy.
